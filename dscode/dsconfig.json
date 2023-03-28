@@ -1,0 +1,62 @@
+
+{
+  "train_micro_batch_size_per_gpu":1,
+  "gradient_accumulation_steps":1,
+  "steps_per_print": 1,
+  "zero_optimization": {
+    "stage": 3,
+    "stage3_max_live_parameters": 3e9,
+    "stage3_max_reuse_distance": 3e9,
+    "stage3_prefetch_bucket_size": 5e7,
+    "contiguous_gradients": true,
+    "offload_optimizer": {
+    "device": "cpu",
+    "pin_memory": true
+      },
+    "offload_param": {
+    "device": "cpu",
+    "pin_memory": true,
+    "max_in_cpu": 3e9
+     },
+    "overlap_comm": true,
+    "reduce_bucket_size": 90000000,
+    "sub_group_size": 1e9
+  },
+ "optimizer": {
+    "type": "Adam",
+    "params": {
+      "lr": 0.001,
+      "betas": [
+        0.8,
+        0.999
+      ],
+      "eps": 1e-8,
+      "weight_decay": 3e-7
+    }
+  },
+  "scheduler": {
+      "type": "WarmupLR",
+      "params": {
+          "warmup_min_lr": 0,
+          "warmup_max_lr": 0.001,
+          "warmup_num_steps": 1000
+      }
+  },
+  "gradient_clipping": 1.0,
+  "fp16": {
+    "enabled": true,
+    "initial_scale_power" : 15,
+    "loss_scale_window": 1000,
+    "hysteresis": 2,
+    "min_loss_scale": 1
+  },
+  "wall_clock_breakdown": true,
+  "zero_allow_untested_optimizer": false,
+  "aio": {
+    "block_size": 1048576,
+    "queue_depth": 16,
+    "single_submit": false,
+    "overlap_events": true,
+    "thread_count": 2
+  }
+}
